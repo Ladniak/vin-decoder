@@ -1,20 +1,31 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { useLazyDecodeVinQuery } from "../../redux/vinApi";
+import { addToHistory } from "../../redux/slice";
+import VinSearchForm from "../../components/VinSearchForm/VinSearchForm";
+
 import module from "./HomePage.module.css";
 
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { vinSchema } from "../../validation/vinSchema";
-
 const HomePage = () => {
-  const [vin, setVin] = useState("");
+  const [currentVin, setCurrentVin] = useState("");
+  const dispatch = useDispatch();
+  const history = useSelector((state) => state.history.items);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const [trigger, { data, isLoading, isFetching }] = useLazyDecodeVinQuery();
 
+  const handleProcessSearch = async (vinCode) => {
     try {
-      await vinSchema.validate({ vin });
-      console.log("Searching for VIN:", vin);
+      const result = await trigger(vinCode).unwrap();
+      setCurrentVin(vinCode);
+
+      dispatch(addToHistory(vinCode));
+
+      if (result.message) {
+        toast.info(result.message);
+      }
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.data?.Message || "Помилка при отриманні даних");
     }
   };
 
@@ -28,27 +39,32 @@ const HomePage = () => {
               <span className={module.accent}>VIN-кодом</span>
             </h1>
             <p className={module.subtitle}>
-              Отримайте повну історію автомобіля: ДТП, пробіг, ремонти та
-              юридичний статус за 1 хвилину.
+              Отримайте повну історію автомобіля: характеристики, виробника та
+              рік випуску за 1 хвилину.
             </p>
 
-            <form className={module.searchBox} onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Введіть 17-значний VIN-код..."
-                className={module.input}
-                value={vin}
-                onChange={(e) => {
-                  setVin(e.target.value.toUpperCase());
-                  toast.dismiss();
-                }}
-                maxLength={17}
-              />
-              <button type="submit" className={module.searchButton}>
-                Перевірити
-              </button>
-            </form>
-            <p className={module.hint}>Наприклад: 1FA6P8CF7G5XXXXXX</p>
+            <VinSearchForm
+              onSearch={handleProcessSearch}
+              isLoading={isLoading || isFetching}
+            />
+
+            {history.length > 0 && (
+              <div className={module.historyWrapper}>
+                <span className={module.hint}>Останні запити:</span>
+                <div className={module.historyButtons}>
+                  {history.map((item) => (
+                    <button
+                      key={item}
+                      className={module.historyItem}
+                      type="button"
+                      onClick={() => handleProcessSearch(item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -62,11 +78,10 @@ const HomePage = () => {
               </div>
               <h3>Що таке VIN?</h3>
               <p>
-                Це унікальний 17-значний код, "ДНК" вашого авто. Він містить
-                дані про виробника, характеристики та рік випуску моделі.
+                Це унікальний 17-значний код, що містить дані про виробника та
+                характеристики авто.
               </p>
             </div>
-
             <div className={module.card}>
               <div className={module.icon}>
                 <svg>
@@ -75,11 +90,10 @@ const HomePage = () => {
               </div>
               <h3>Навіщо перевіряти?</h3>
               <p>
-                Щоб не купити "кота в мішку". Ми перевіряємо бази на предмет
-                викрадень, арештів, реального пробігу та участі в ДТП.
+                Щоб дізнатися технічні параметри та офіційні дані про
+                транспортний засіб.
               </p>
             </div>
-
             <div className={module.card}>
               <div className={module.icon}>
                 <svg>
@@ -88,14 +102,33 @@ const HomePage = () => {
               </div>
               <h3>Як це працює?</h3>
               <p>
-                Просто введіть код у поле вище. Наша система миттєво опрацює
-                запит через офіційні реєстри та надасть вам звіт.
+                Введіть код, і система підтягне дані з офіційного реєстру NHTSA.
               </p>
             </div>
           </div>
         </section>
+
+        {data && (
+          <section className={module.resultsSection}>
+            <h2 className={module.resultsTitle}>
+              Результати для{" "}
+              <span className={module.accenth2}>{currentVin}</span>{" "}
+            </h2>
+            <div className={module.resultsGrid}>
+              {data.results.map((res, index) => (
+                <div
+                  key={`${res.VariableId}-${index}`}
+                  className={module.resultCard}
+                >
+                  <span className={module.variableName}> {res.Variable}:</span>
+                  <span className={module.variableValue}> {res.Value}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={3000} />
     </>
   );
 };
