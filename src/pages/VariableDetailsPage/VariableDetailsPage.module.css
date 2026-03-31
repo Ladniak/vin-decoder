@@ -1,0 +1,74 @@
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 20px;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.backBtn:hover {
+  color: #4f46e5;
+}
+
+.card {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.description {
+  color: #475569;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.description b,
+.description strong {
+  color: #1e293b;
+}
+
+.description ul {
+  padding-left: 20px;
+  margin: 1rem 0;
+}
+
+.description li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1.5rem;
+  }
+}

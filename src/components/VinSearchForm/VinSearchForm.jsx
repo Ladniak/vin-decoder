@@ -37,7 +37,7 @@ const VinSearchForm = ({ onSearch, isLoading }) => {
       <button
         type="submit"
         className={module.searchButton}
-        disabled={isLoading || vin.length !== 17}
+        disabled={isLoading}
       >
         {isLoading ? "Пошук..." : "Перевірити"}
       </button>

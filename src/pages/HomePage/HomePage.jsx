@@ -1,20 +1,38 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+
 import { ToastContainer, toast } from "react-toastify";
+
+import { useDispatch, useSelector } from "react-redux";
 import { useLazyDecodeVinQuery } from "../../redux/vinApi";
 import { addToHistory } from "../../redux/slice";
+
 import VinSearchForm from "../../components/VinSearchForm/VinSearchForm";
 
 import module from "./HomePage.module.css";
+
+import { Link } from "react-router";
+import { useSearchParams } from "react-router";
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   const [currentVin, setCurrentVin] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const vinFromUrl = searchParams.get("vin");
   const history = useSelector((state) => state.history.items);
+
   const [trigger, { data, isLoading, isFetching }] = useLazyDecodeVinQuery();
 
+  useEffect(() => {
+    if (vinFromUrl) {
+      trigger(vinFromUrl);
+      setCurrentVin(vinFromUrl);
+    }
+  }, [vinFromUrl, trigger]);
+
   const handleProcessSearch = async (vinCode) => {
+    setSearchParams({ vin: vinCode });
     try {
       const result = await trigger(vinCode).unwrap();
       setCurrentVin(vinCode);
@@ -120,7 +138,13 @@ const HomePage = () => {
                   key={`${res.VariableId}-${index}`}
                   className={module.resultCard}
                 >
-                  <span className={module.variableName}> {res.Variable}:</span>
+                  <Link
+                    to={`/variables/${res.VariableId}`}
+                    className={module.variableName}
+                    title="Переглянути опис змінної"
+                  >
+                    {res.Variable}:
+                  </Link>
                   <span className={module.variableValue}> {res.Value}</span>
                 </div>
               ))}
