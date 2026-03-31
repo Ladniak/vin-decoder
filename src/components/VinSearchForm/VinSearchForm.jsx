@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { vinSchema } from "../../validation/vinSchema";
+
 import module from "./VinSearchForm.module.css";
 
 const VinSearchForm = ({ onSearch, isLoading }) => {

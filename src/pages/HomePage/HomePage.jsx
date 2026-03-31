@@ -8,10 +8,10 @@ import VinSearchForm from "../../components/VinSearchForm/VinSearchForm";
 import module from "./HomePage.module.css";
 
 const HomePage = () => {
-  const [currentVin, setCurrentVin] = useState("");
   const dispatch = useDispatch();
-  const history = useSelector((state) => state.history.items);
 
+  const [currentVin, setCurrentVin] = useState("");
+  const history = useSelector((state) => state.history.items);
   const [trigger, { data, isLoading, isFetching }] = useLazyDecodeVinQuery();
 
   const handleProcessSearch = async (vinCode) => {
