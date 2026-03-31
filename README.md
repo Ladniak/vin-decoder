@@ -1,18 +1,71 @@
-# React + Vite
+# VIN Decoder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Вебзастосунок для детальної розшифровки автомобільних VIN-кодів. Проєкт дозволяє користувачам миттєво отримувати технічні характеристики автомобіля, переглядати історію останніх запитів та користуватися повним довідником технічних змінних від API NHTSA.
 
-Currently, two official plugins are available:
+## Посилання на проєкт
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Розгорнутий застосунок (Deployment) —
 
-## React Compiler
+## Функціонал
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Розшифровка VIN-коду**: Отримання детальних даних про виробника, модель, рік випуску та технічні параметри.
+- **Валідація вводу**: Перевірка VIN-коду на відповідність формату (17 символів, відсутність заборонених літер I, O, Q).
+- **Історія запитів**: Збереження трьох останніх успішних пошуків у локальному сховищі (**LocalStorage**) для швидкого повторного доступу.
+- **Довідник змінних**: Повний список усіх можливих технічних параметрів (Variables) з їхніми описами.
+- **Деталі змінної**: Окрема сторінка з розширеною інформацією про кожну технічну характеристику.
+- **Адаптивний дизайн**: Коректне відображення на пристроях з роздільною здатністю від **420px** до **1440px**.
 
-Note: This will impact Vite dev & build performances.
+## Технологічний стек
 
-## Expanding the ESLint configuration
+- **React** — бібліотека для побудови інтерфейсу.
+- **Redux Toolkit** — керування станом застосунку (історія запитів).
+- **RTK Query** — ефективна робота з API (кешування, обробка станів завантаження та помилок).
+- **React Router** — навігація між сторінками (SPA).
+- **Yup** — схема валідації введених даних.
+- **React Toastify** — система інтерактивних сповіщень.
+- **CSS Modules** — ізольована стилізація компонентів без сторонніх фреймворків.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Встановлення та запуск
+
+1.  **Клонуйте репозиторій:**
+
+    ```bash
+    git clone https://github.com/Ladniak/vin-decoder.git
+    ```
+
+2.  **Перейдіть у директорію проєкту:**
+
+    ```bash
+    cd vin-decoder
+    ```
+
+3.  **Відкрийте проєкт у редакторі коду:**
+
+    ```bash
+    code .
+    ```
+
+4.  **Встановіть залежності:**
+
+    ```bash
+    npm install
+    ```
+
+5.  **Запустіть сервер для розробки:**
+    ```bash
+    npm run dev
+    ```
+
+## Використання
+
+1.  Відкрийте застосунок у браузері.
+2.  Введіть 17-значний VIN-код у поле пошуку на головній сторінці.
+3.  Натисніть **"Перевірити"** для отримання результатів.
+4.  Використовуйте блок **"Останні запити"** для миттєвого повторного пошуку.
+5.  Перейдіть у розділ **"Змінні"**, щоб ознайомитися з технічним глосарієм API.
+
+## Автор
+
+**Сергій Ладняк**
+20 років, Frontend Developer
+GitHub: [Ladniak](https://github.com/Ladniak)
