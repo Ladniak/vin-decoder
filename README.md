@@ -4,7 +4,7 @@
 
 ## Посилання на проєкт
 
-Розгорнутий застосунок (Deployment) -
+Розгорнутий застосунок (Deployment) - https://vin-decoder-liard.vercel.app/
 
 ## Функціонал
 
